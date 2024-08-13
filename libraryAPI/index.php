@@ -3,25 +3,24 @@ require 'config/database.php';
 require 'controllers/BookController.php';
 
 $method = $_SERVER['REQUEST_METHOD'];
+$id = $_GET['id'] ?? null;
 
 switch ($method) {
     case 'GET':
-        if (isset($_GET['id'])) {
-            getBook($conn, $_GET['id']);
+        if ($id) {
+            getBook($conn, $id);
         } else {
             getBooks($conn);
         }
         break;
     case 'POST':
-        addBook($conn, $_POST);
+        addBook($conn);
         break;
     case 'PUT':
-        parse_str(file_get_contents("php://input"), $_PUT);
-        updateBook($conn, $_PUT);
+        updateBook($conn);
         break;
     case 'DELETE':
-        parse_str(file_get_contents("php://input"), $_DELETE);
-        deleteBook($conn, $_DELETE['id']);
+        deleteBook($conn, $id);
         break;
     default:
         echo json_encode(["message" => "Invalid request"]);

@@ -27,9 +27,22 @@ function getBook($conn, $id) {
     $stmt->close();
 }
 
-function addBook($conn, $data) {
+
+function addBook($conn) {
+    $data = json_decode(file_get_contents("php://input"), true);
+    
+    $title = $data['title'] ?? null;
+    $author = $data['author'] ?? null;
+    $genre = $data['genre'] ?? null;
+    $published_date = $data['published_date'] ?? null;
+    
+    if ($title === null || $author === null || $genre === null || $published_date === null) {
+        echo json_encode(["error" => "All fields are required"]);
+        return;
+    }
+    
     $stmt = $conn->prepare("INSERT INTO books (title, author, genre, published_date) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param("ssss", $data['title'], $data['author'], $data['genre'], $data['published_date']);
+    $stmt->bind_param("ssss", $title, $author, $genre, $published_date);
     
     if ($stmt->execute()) {
         echo json_encode(["message" => "New book created successfully"]);
@@ -39,9 +52,28 @@ function addBook($conn, $data) {
     $stmt->close();
 }
 
-function updateBook($conn, $data) {
+
+
+function updateBook($conn) {
+    // Obtener el ID de la URL
+    $id = $_GET['id'] ?? null;
+    
+    // Leer el cuerpo de la solicitud
+    $data = json_decode(file_get_contents("php://input"), true);
+    
+    // Obtener los otros campos del cuerpo de la solicitud
+    $title = $data['title'] ?? null;
+    $author = $data['author'] ?? null;
+    $genre = $data['genre'] ?? null;
+    $published_date = $data['published_date'] ?? null;
+    
+    if ($id === null || $title === null || $author === null || $genre === null || $published_date === null) {
+        echo json_encode(["error" => "All fields are required"]);
+        return;
+    }
+    
     $stmt = $conn->prepare("UPDATE books SET title = ?, author = ?, genre = ?, published_date = ? WHERE id = ?");
-    $stmt->bind_param("ssssi", $data['title'], $data['author'], $data['genre'], $data['published_date'], $data['id']);
+    $stmt->bind_param("ssssi", $title, $author, $genre, $published_date, $id);
     
     if ($stmt->execute()) {
         echo json_encode(["message" => "Book updated successfully"]);
@@ -52,14 +84,24 @@ function updateBook($conn, $data) {
 }
 
 function deleteBook($conn, $id) {
+    
+    if ($id === null) {
+        echo json_encode(["error" => "ID is required"]);
+        return;
+    }
+    
     $stmt = $conn->prepare("DELETE FROM books WHERE id = ?");
     $stmt->bind_param("i", $id);
     
     if ($stmt->execute()) {
-        echo json_encode(["message" => "Book deleted successfully"]);
+        if ($stmt->affected_rows > 0) {
+            echo json_encode(["message" => "Book deleted successfully"]);
+        } else {
+            echo json_encode(["error" => "No book found with id $id"]);
+        }
     } else {
         echo json_encode(["error" => "Error: " . $stmt->error]);
     }
     $stmt->close();
 }
-?>
+
