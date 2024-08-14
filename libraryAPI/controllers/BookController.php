@@ -55,13 +55,13 @@ function addBook($conn) {
 
 
 function updateBook($conn) {
-    // Obtener el ID de la URL
+    
     $id = $_GET['id'] ?? null;
     
-    // Leer el cuerpo de la solicitud
+    
     $data = json_decode(file_get_contents("php://input"), true);
     
-    // Obtener los otros campos del cuerpo de la solicitud
+    
     $title = $data['title'] ?? null;
     $author = $data['author'] ?? null;
     $genre = $data['genre'] ?? null;

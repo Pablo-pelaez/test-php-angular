@@ -3,11 +3,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BookService } from '../../services/book.service';
 import { Book } from '../../models/book';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-book-edit',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, CommonModule],
   templateUrl: './book-edit.component.html',
   styleUrl: './book-edit.component.css'
 })
