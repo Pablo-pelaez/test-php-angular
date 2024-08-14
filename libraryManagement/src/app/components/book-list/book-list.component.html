@@ -3,7 +3,7 @@
 <ul>
   <li *ngFor="let book of books">
     {{ book.title }} by {{ book.author }}
-    <button (click)="deleteBook(book.id!)">Delete</button>
+    <button (click)="deleteBook(book)">Delete</button>
     <a [routerLink]="['/edit', book.id]">Edit</a>
   </li>
 </ul>

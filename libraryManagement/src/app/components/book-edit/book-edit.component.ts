@@ -4,6 +4,7 @@ import { BookService } from '../../services/book.service';
 import { Book } from '../../models/book';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-book-edit',
@@ -32,8 +33,15 @@ export class BookEditComponent implements OnInit {
 
   onSubmit(): void {
     this.bookService.updateBook(this.book).subscribe(() => {
-      this.router.navigate(['/'])
-    })
+      Swal.fire({
+        title: 'Success!',
+        text: 'The book has been updated successfully.',
+        icon: 'success',
+        confirmButtonText: 'OK'
+      }).then(() => {
+        this.router.navigate(['/']); // Redirigir a la lista de libros
+      });
+    });
   }
 
 }

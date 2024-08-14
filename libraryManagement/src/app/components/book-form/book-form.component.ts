@@ -4,6 +4,7 @@ import { BookService } from '../../services/book.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-book-form',
@@ -20,8 +21,15 @@ export class BookFormComponent {
 
   onSubmit(): void {
     this.bookService.addBook(this.book).subscribe(() => {
-      this.router.navigate(['/'])
-    })
+      Swal.fire({
+        title: 'Success!',
+        text: 'The book has been added successfully.',
+        icon: 'success',
+        confirmButtonText: 'OK'
+      }).then(() => {
+        this.router.navigate(['/']);
+      });
+    });
   }
 
 }
