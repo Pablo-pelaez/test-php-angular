@@ -1,9 +1,29 @@
-<h1>Book List</h1>
-<a routerLink="/add">Add New Book</a>
-<ul>
-  <li *ngFor="let book of books">
-    {{ book.title }} by {{ book.author }}
-    <button (click)="deleteBook(book)">Delete</button>
-    <a [routerLink]="['/edit', book.id]">Edit</a>
-  </li>
-</ul>
+<h1 class="font-bold text-2xl text-center mt-4">Book List</h1>
+<div class="container text-center mt-7">
+  <a class="mt-4 bg-green-700 p-4 rounded" routerLink="/add">Add New Book</a>
+</div>
+<table class="table-fixed m-5">
+  <thead flex just>
+    <tr>
+      <th class="w-1/4 px-3 py-2">Title</th>
+      <th class="w-1/4 px-3 py-2">Author</th>
+      <th class="w-1/4 px-3 py-2">Genre</th>
+      <th class="w-1/4 px-4 py-2">Date Published</th>
+      <th class="w-1/2 px-4 py-2">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let book of books">
+      <td class="border px-4 py-2 hover:bg-slate-400">{{book.title}}</td>
+      <td class="border px-4 py-2 hover:bg-slate-400">{{book.author}}</td>
+      <td class="border px-4 py-2 hover:bg-slate-400">{{book.genre}}</td>
+      <td class="border px-4 py-2 hover:bg-slate-400">{{book.published_date}}</td>
+      <td>
+        <a class="bg-slate-700 p-4 w-5 rounded" [routerLink]="['/edit', book.id]">Edit</a>
+      </td>
+      <td>
+        <button (click)="deleteBook(book)" class="bg-red-700 p-4 rounded">Delete</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
